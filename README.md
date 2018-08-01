@@ -1,31 +1,29 @@
-# waves-audio
+# waves-masters
 
-> Low level WebAudio components for audio synthesis
+> Low level components for transport and scheduling
 
 ## Documentation
 
-[http://wavesjs.github.io/waves-audio/](http://wavesjs.github.io/waves-audio/)
+[http://wavesjs.github.io/waves-masters/](http://wavesjs.github.io/waves-masters/)
 
 ## Usage
 
 #### Install
 
 ```sh
-npm install [--save] waves-audio
+npm install [--save] waves-masters
 ```
 
 #### import
 
 ```js
-import * as audio from 'waves-audio';
+import * as masters from 'waves-masters';
 ```
 
 ## List of components
 
 #### core
 
-- `audioContext`
-- `AudioTimeEngine`
 - `PriorityQueue`
 - `SchedulingQueue`
 - `TimeEngine`
@@ -36,13 +34,6 @@ import * as audio from 'waves-audio';
 - `SimpleScheduler`
 - `Scheduler`
 - `Transport`      
-
-#### engines
-
-- `GranularEngine`
-- `Metronome`
-- `PlayerEngine`
-- `SegmentEngine`
 
 <hr />
 

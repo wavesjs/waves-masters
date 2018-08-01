@@ -31,7 +31,6 @@ function isFunction(functionToCheck) {
  * @see Scheduler
  *
  * @example
- * @example
  * import * as masters from 'waves-masters';
  *
  * const getTimeFunction = () => preformance.now() / 1000;

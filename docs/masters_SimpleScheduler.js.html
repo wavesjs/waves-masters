@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Documentation - Source: masters/simple-scheduler.js</title>
+    <title>Documentation - Source: masters/SimpleScheduler.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -20,7 +20,7 @@
 
     <!-- if home page assume a title is already present in README -->
     
-    <h1 class="page-title">Source: masters/simple-scheduler.js</h1>
+    <h1 class="page-title">Source: masters/SimpleScheduler.js</h1>
     
 
     
@@ -31,17 +31,20 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import debug from 'debug';
-import defaultAudioContext from '../core/audio-context';
-import TimeEngine from '../core/time-engine';
+import TimeEngine from '../core/TimeEngine';
 
-const log = debug('wavesjs:audio');
+const log = debug('wavesjs:masters');
+
+function isFunction(functionToCheck) {
+  return functionToCheck &amp;&amp; {}.toString.call(functionToCheck) === '[object Function]';
+}
 
 /**
  *
  *
  *
  * The SimpleScheduler class implements a simplified master for time engines
- * (see TimeEngine or AudioTimeEngine) that implement the scheduled interface
+ * (see TimeEngine) that implement the scheduled interface
  * such as the Metronome and the GranularEngine. The API and funtionalities of
  * the SimpleScheduler class are identical to the Scheduler class. But, other
  * than the Scheduler, the SimpleScheduler class does not guarantee the order
@@ -49,33 +52,30 @@ const log = debug('wavesjs:audio');
  * and to scheduled callback functions) within a scheduling period (see period
  * attribute).
  *
- * To get a unique instance of SimpleScheduler as the global scheduler of an
- * application, the getSimpleScheduler factory function should be used. The
- * function accepts an audio context as optional argument and uses the Waves
- * default audio context (see Audio Context) as default. The factory creates
- * a single (simple) scheduler for each audio context.
+ * {@link https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler}
  *
- * Example that shows three Metronome engines running in a SimpleScheduler:
- * {@link https://rawgit.com/wavesjs/waves-audio/master/examples/simple-scheduler.html}
- *
+ * @param {Function} getTimeFunction - Function that must return a time in second.
  * @param {Object} [options={}] - default options
  * @param {Number} [options.period=0.025] - period of the scheduler.
  * @param {Number} [options.lookahead=0.1] - lookahead of the scheduler.
  *
  * @see TimeEngine
- * @see AudioTimeEngine
- * @see getSimpleScheduler
  * @see Scheduler
  *
  * @example
- * import * as audio from 'waves-audio';
- * const scheduler = audio.getSimpleScheduler();
+ * import * as masters from 'waves-masters';
+ *
+ * const getTimeFunction = () => preformance.now() / 1000;
+ * const scheduler = new masters.SimpleScheduler(getTimeFunction);
  *
  * scheduler.add(myEngine);
  */
 class SimpleScheduler {
-  constructor(options = {}) {
-    this.audioContext = options.audioContext ||  defaultAudioContext;
+  constructor(getTimeFunction, options = {}) {
+    if (!isFunction(getTimeFunction))
+      throw new Error('Invalid argument `getTimeFunction`');
+
+    this.getTimeFunction = getTimeFunction;
 
     this.__engines = new Set();
 
@@ -110,7 +110,7 @@ class SimpleScheduler {
   }
 
   __rescheduleEngine(engine, time) {
-    var index = this.__schedEngines.indexOf(engine);
+    const index = this.__schedEngines.indexOf(engine);
 
     if (index >= 0) {
       if (time !== Infinity) {
@@ -126,7 +126,7 @@ class SimpleScheduler {
   }
 
   __unscheduleEngine(engine) {
-    var index = this.__schedEngines.indexOf(engine);
+    const index = this.__schedEngines.indexOf(engine);
 
     if (index >= 0) {
       this.__schedEngines.splice(index, 1);
@@ -148,13 +148,12 @@ class SimpleScheduler {
   }
 
   __tick() {
-    var audioContext = this.audioContext;
-    var currentTime = audioContext.currentTime;
-    var i = 0;
+    const currentTime = this.getTimeFunction();
+    let i = 0;
 
     while (i &lt; this.__schedEngines.length) {
-      var engine = this.__schedEngines[i];
-      var time = this.__schedTimes[i];
+      const engine = this.__schedEngines[i];
+      let time = this.__schedTimes[i];
 
       while (time &amp;&amp; time &lt;= currentTime + this.lookahead) {
         time = Math.max(time, currentTime);
@@ -194,7 +193,7 @@ class SimpleScheduler {
    * @instance
    */
   get currentTime() {
-    return this.__currentTime || this.audioContext.currentTime + this.lookahead;
+    return this.__currentTime || this.getTimeFunction() + this.lookahead;
   }
 
   get currentPosition() {
@@ -304,14 +303,14 @@ export default SimpleScheduler;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioTimeEngine.html">AudioTimeEngine</a></li><li><a href="GranularEngine.html">GranularEngine</a></li><li><a href="Metronome.html">Metronome</a></li><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PlayerEngine.html">PlayerEngine</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SchedulingQueue.html">SchedulingQueue</a></li><li><a href="SegmentEngine.html">SegmentEngine</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul><h3>Global</h3><ul><li><a href="global.html">audioContext</a></li><li><a href="global.html#getScheduler">getScheduler</a></li><li><a href="global.html#getSimpleScheduler">getSimpleScheduler</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SchedulingQueue.html">SchedulingQueue</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
     
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 01 2018 11:30:40 GMT+0200 (CEST)
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 01 2018 15:09:15 GMT+0200 (CEST)
     
 </footer>
 

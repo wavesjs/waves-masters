@@ -295,6 +295,8 @@ class TransportSchedulingQueue extends SchedulingQueue {
  *
  * [example]{@link https://rawgit.com/wavesjs/waves-masters/master/examples/transport}
  *
+ * @param {Object} scheduler - instance of Scheduler
+ *
  * @example
  * import * as masters from 'waves-masters';
  *
