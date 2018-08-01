@@ -1,7 +1,7 @@
 {
-  "name": "waves-audio",
-  "version": "0.3.3",
-  "description": "low level web audio components for synthesis and scheduling",
+  "name": "waves-masters",
+  "version": "0.0.1",
+  "description": "low level components for transport and scheduling",
   "authors": [
     "Norbert Schnell",
     "Benjamin Matuszewski",
@@ -11,22 +11,21 @@
   ],
   "main": "dist/index.js",
   "license": "BSD-3-Clause",
-  "standalone": "wavesAudio",
+  "standalone": "wavesMasters",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wavesjs/waves-audio"
+    "url": "https://github.com/wavesjs/waves-masters"
   },
   "bugs": {
-    "url": "https://github.com/wavesjs/waves-audio/issues"
+    "url": "https://github.com/wavesjs/waves-masters/issues"
   },
-  "homepage": "http://wavesjs.github.io/waves-audio",
+  "homepage": "http://wavesjs.github.io/waves-masters",
   "keywords": [
     "dsp",
     "web audio",
-    "synthesis",
     "scheduling",
     "audio player",
-    "granular synthesis"
+    "audio transport"
   ],
   "scripts": {
     "bundle": "node ./bin/runner --bundle",

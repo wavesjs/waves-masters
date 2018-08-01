@@ -6,6 +6,8 @@ body {
   margin: 0;
   padding: 20px;
   max-width: 1200px;
+  font-size: 62.5%;
+  font-family: monospace;
 }
 
 h1, h2 {
@@ -13,6 +15,14 @@ h1, h2 {
   font-family: monospace;
   font-weight: normal;
   padding-left: 0;
+}
+
+.example {
+  color: white;
+  font-size: 14px;
+  font-family: monospace;
+  margin: 20px 0;
+  height: 30px;
 }
 
 #container {

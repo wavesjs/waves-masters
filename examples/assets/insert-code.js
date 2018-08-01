@@ -1,30 +1,25 @@
-function insertCode() {
-  var scripts = document.querySelectorAll('script');
-  scripts = Array.prototype.slice.call(scripts, 0);
+window.addEventListener('DOMContentLoaded', function() {
+  const $examples = Array.from(document.querySelectorAll('.example'));
 
-  scripts.forEach(function(script) {
-    if (!script.hasAttribute('rel')) { return; }
+  const promises = $examples.map($example => {
+    const rel = $example.getAttribute('rel');
+    const jsFile = `./src/${rel}.js`;
 
-    var relId = script.getAttribute('rel');
-    var rel = document.querySelector('#' + relId);
+    return window.fetch(jsFile)
+      .then(response => response.text())
+      .then(code => {
+        var $pre = document.createElement('pre');
+        var $code = document.createElement('code');
 
-    var content = script.textContent
-      .replace(/(\/\/ ---------\/\\---------[\S\s]*?\/\/ ---------\\\/---------)/g, '')
-      .replace(/(\n\n+)/mg, '\n\n')
-      .replace(/^(\n\n)/, '')
-      .replace(/(\n\n\s*)$/, '');
+        $code.textContent = code;
+        $code.classList.add('language-javascript');
 
-    var pre = document.createElement('pre');
-    var code = document.createElement('code');
+        $pre.appendChild($code);
+        $example.after($pre);
 
-    code.innerHTML = content;
-    code.classList.add('language-javascript');
-
-    pre.appendChild(code);
-    rel.parentNode.insertBefore(pre, rel.nextSibling);
+        return Promise.resolve();
+      });
   });
 
-  Prism.highlightAll();
-}
-
-window.addEventListener('DOMContentLoaded', insertCode);
+  Promise.all(promises).then(() => Prism.highlightAll());
+});

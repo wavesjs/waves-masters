@@ -1,8 +1,40 @@
-// import defaultAudioContext from '../core/audio-context';
-import PriorityQueue from '../core/PriorityQueue';
-import SchedulingQueue from '../core/SchedulingQueue';
-import TimeEngine from '../core/TimeEngine';
-// import { getScheduler } from './factories';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Documentation - Source: masters/transport.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/overrides.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <!-- if home page assume a title is already present in README -->
+    
+    <h1 class="page-title">Source: masters/transport.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import defaultAudioContext from '../core/audio-context';
+import PriorityQueue from '../core/priority-queue';
+import SchedulingQueue from '../core/scheduling-queue';
+import TimeEngine from '../core/time-engine';
+import { getScheduler } from './factories';
 
 
 function addDuplet(firstArray, secondArray, firstElement, secondElement) {
@@ -72,14 +104,14 @@ class Transported extends TimeEngine {
 
   syncPosition(time, position, speed) {
     if (speed > 0) {
-      if (position < this.__startPosition) {
+      if (position &lt; this.__startPosition) {
 
         if (this.__isRunning)
           this.stop(time, position - this.__offsetPosition);
 
         this.__isRunning = false;
         return this.__startPosition;
-      } else if (position < this.__endPosition) {
+      } else if (position &lt; this.__endPosition) {
         this.start(time, position - this.__offsetPosition, speed);
 
         this.__isRunning = true;
@@ -146,9 +178,9 @@ class TransportedTransported extends Transported {
   }
 
   syncPosition(time, position, speed) {
-    if (speed > 0 && position < this.__endPosition)
+    if (speed > 0 &amp;&amp; position &lt; this.__endPosition)
       position = Math.max(position, this.__startPosition);
-    else if (speed < 0 && position >= this.__startPosition)
+    else if (speed &lt; 0 &amp;&amp; position >= this.__startPosition)
       position = Math.min(position, this.__endPosition);
 
     return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
@@ -157,7 +189,7 @@ class TransportedTransported extends Transported {
   advancePosition(time, position, speed) {
     position = this.__offsetPosition + this.__engine.advancePosition(time, position - this.__offsetPosition, speed);
 
-    if (speed > 0 && position < this.__endPosition || speed < 0 && position >= this.__startPosition)
+    if (speed > 0 &amp;&amp; position &lt; this.__endPosition || speed &lt; 0 &amp;&amp; position >= this.__startPosition)
       return position;
 
     return Infinity * speed;
@@ -298,15 +330,9 @@ class TransportSchedulingQueue extends SchedulingQueue {
  * [example]{@link https://rawgit.com/wavesjs/waves-audio/master/examples/transport.html}
  *
  * @example
- * import * as masters from 'waves-masters';
- *
- * const getTimeFunction = () => {
- *   const now = process.hrtime();
- *   return now[0] + now[1] * 1e-9;
- * }
- * const scheduler = new masters.Scheduler(getTimeFunction);
- * const transport = new masters.Transport(scheduler);
- * const playControl = new masters.PlayControl(scheduler, transport);
+ * import * as audio from 'waves-audio';
+ * const transport = new audio.Transport();
+ * const playControl = new audio.PlayControl(transport);
  * const myEngine = new MyEngine();
  * const yourEngine = new yourEngine();
  *
@@ -352,9 +378,9 @@ class Transport extends TimeEngine {
 
     if (numTransportedEngines > 0) {
       this.__transportedQueue.clear();
-      this.__transportedQueue.reverse = (speed < 0);
+      this.__transportedQueue.reverse = (speed &lt; 0);
 
-      for (let i = 0; i < numTransportedEngines; i++) {
+      for (let i = 0; i &lt; numTransportedEngines; i++) {
         const engine = this.__transported[i];
         const nextEnginePosition = engine.syncPosition(time, position, speed);
         this.__transportedQueue.insert(engine, nextEnginePosition);
@@ -398,7 +424,7 @@ class Transport extends TimeEngine {
   get currentPosition() {
     const master = this.master;
 
-    if (master && master.currentPosition !== undefined)
+    if (master &amp;&amp; master.currentPosition !== undefined)
       return master.currentPosition;
 
     return this.__position + (this.__scheduler.currentTime - this.__time) * this.__speed;
@@ -412,7 +438,7 @@ class Transport extends TimeEngine {
   resetPosition(position) {
     const master = this.master;
 
-    if (master && master.resetEnginePosition !== undefined)
+    if (master &amp;&amp; master.resetEnginePosition !== undefined)
       master.resetEnginePosition(this, position);
     else
       this.__schedulerHook.resetPosition(position);
@@ -461,11 +487,11 @@ class Transport extends TimeEngine {
     this.__position = position;
     this.__speed = speed;
 
-    if (speed !== lastSpeed || (seek && speed !== 0)) {
+    if (speed !== lastSpeed || (seek &amp;&amp; speed !== 0)) {
       let nextPosition;
 
       // resync transported engines
-      if (seek || speed * lastSpeed < 0) {
+      if (seek || speed * lastSpeed &lt; 0) {
         // seek or reverse direction
         nextPosition = this.__syncTransportedPosition(time, position, speed);
       } else if (lastSpeed === 0) {
@@ -539,7 +565,7 @@ class Transport extends TimeEngine {
       transported = engineOrTransported;
     }
 
-    if (engine && transported) {
+    if (engine &amp;&amp; transported) {
       const nextPosition = this.__transportedQueue.remove(transported);
 
       transported.destroy();
@@ -581,3 +607,28 @@ class Transport extends TimeEngine {
 }
 
 export default Transport;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioTimeEngine.html">AudioTimeEngine</a></li><li><a href="GranularEngine.html">GranularEngine</a></li><li><a href="Metronome.html">Metronome</a></li><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PlayerEngine.html">PlayerEngine</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SchedulingQueue.html">SchedulingQueue</a></li><li><a href="SegmentEngine.html">SegmentEngine</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul><h3>Global</h3><ul><li><a href="global.html">audioContext</a></li><li><a href="global.html#getScheduler">getScheduler</a></li><li><a href="global.html#getSimpleScheduler">getSimpleScheduler</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 01 2018 11:30:40 GMT+0200 (CEST)
+    
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
