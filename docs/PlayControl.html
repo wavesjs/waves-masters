@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>waves-audio - Class: PlayControl</title>
+    <title>Documentation - Class: PlayControl</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -49,7 +49,7 @@
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="PlayControl"><span class="type-signature"></span>new PlayControl<span class="signature">(engine)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="PlayControl"><span class="type-signature"></span>new PlayControl<span class="signature">(scheduler, engine)</span><span class="type-signature"></span></h4>
 
     
 
@@ -84,6 +84,29 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>scheduler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>instance of Scheduler</p></td>
+        </tr>
+
     
 
         <tr>
@@ -145,7 +168,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line274">line 274</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line278">line 278</a>
     </li></ul></dd>
     
 
@@ -172,9 +195,15 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import * as audio from 'waves-audio';
-const playerEngine = audio.PlayerEngine();
-const playControl = new audio.PlayControl(playerEngine);
+    <pre class="prettyprint"><code>import * as masters from 'waves-masters';
+
+const getTimeFunction = () => {
+  const now = process.hrtime();
+  return now[0] + now[1] * 1e-9;
+}
+const scheduler = new masters.Scheduler(getTimeFunction);
+const playerEngine = new MyTimeEngine();
+const playControl = new masters.PlayControl(scheduler, playerEngine);
 
 playControl.start();</code></pre>
 
@@ -269,7 +298,7 @@ This function will be replaced when the play-control is added to a master.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line361">line 361</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line364">line 364</a>
     </li></ul></dd>
     
 
@@ -347,7 +376,7 @@ This function will be replaced when the play-control is added to a master.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line347">line 347</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line350">line 350</a>
     </li></ul></dd>
     
 
@@ -419,7 +448,7 @@ This function will be replaced when the play-control is added to a master.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line409">line 409</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line412">line 412</a>
     </li></ul></dd>
     
 
@@ -491,7 +520,7 @@ This function will be replaced when the play-control is added to a master.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line475">line 475</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line478">line 478</a>
     </li></ul></dd>
     
 
@@ -563,7 +592,7 @@ This function will be replaced when the play-control is added to a master.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line459">line 459</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line462">line 462</a>
     </li></ul></dd>
     
 
@@ -587,7 +616,7 @@ This function will be replaced when the play-control is added to a master.</p>
 
 
 <div class="description">
-    <p>Returns if the play control is runnin g.</p>
+    <p>Returns if the play control is running.</p>
 </div>
 
 
@@ -635,7 +664,7 @@ This function will be replaced when the play-control is added to a master.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line375">line 375</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line378">line 378</a>
     </li></ul></dd>
     
 
@@ -708,7 +737,7 @@ be non-zero between -16 and -1/16 or between 1/16 and 16.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line535">line 535</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line538">line 538</a>
     </li></ul></dd>
     
 
@@ -786,7 +815,7 @@ be non-zero between -16 and -1/16 or between 1/16 and 16.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line522">line 522</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line525">line 525</a>
     </li></ul></dd>
     
 
@@ -917,7 +946,7 @@ be non-zero between -16 and -1/16 or between 1/16 and 16.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line574">line 574</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line577">line 577</a>
     </li></ul></dd>
     
 
@@ -1071,7 +1100,7 @@ be non-zero between -16 and -1/16 or between 1/16 and 16.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line452">line 452</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line455">line 455</a>
     </li></ul></dd>
     
 
@@ -1153,7 +1182,7 @@ be non-zero between -16 and -1/16 or between 1/16 and 16.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line514">line 514</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line517">line 517</a>
     </li></ul></dd>
     
 
@@ -1235,7 +1264,7 @@ be non-zero between -16 and -1/16 or between 1/16 and 16.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_play-control.js.html">masters/play-control.js</a>, <a href="masters_play-control.js.html#line530">line 530</a>
+        <a href="masters_PlayControl.js.html">masters/PlayControl.js</a>, <a href="masters_PlayControl.js.html#line533">line 533</a>
     </li></ul></dd>
     
 
@@ -1277,14 +1306,14 @@ be non-zero between -16 and -1/16 or between 1/16 and 16.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioTimeEngine.html">AudioTimeEngine</a></li><li><a href="GranularEngine.html">GranularEngine</a></li><li><a href="Metronome.html">Metronome</a></li><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PlayerEngine.html">PlayerEngine</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SegmentEngine.html">SegmentEngine</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul><h3>Global</h3><ul><li><a href="global.html">audioContext</a></li><li><a href="global.html#getScheduler">getScheduler</a></li><li><a href="global.html#getSimpleScheduler">getSimpleScheduler</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SchedulingQueue.html">SchedulingQueue</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
     
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.3</a> on Tue Jul 25 2017 12:28:03 GMT+0200 (CEST)
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 01 2018 15:11:46 GMT+0200 (CEST)
     
 </footer>
 

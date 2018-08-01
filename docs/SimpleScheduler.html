@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>waves-audio - Class: SimpleScheduler</title>
+    <title>Documentation - Class: SimpleScheduler</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -35,20 +35,14 @@
         <h2>SimpleScheduler</h2>
         
             <div class="class-description"><p>The SimpleScheduler class implements a simplified master for time engines
-(see TimeEngine or AudioTimeEngine) that implement the scheduled interface
+(see TimeEngine) that implement the scheduled interface
 such as the Metronome and the GranularEngine. The API and funtionalities of
 the SimpleScheduler class are identical to the Scheduler class. But, other
 than the Scheduler, the SimpleScheduler class does not guarantee the order
 of events (i.e. calls to the advanceTime method of scheduled time engines
 and to scheduled callback functions) within a scheduling period (see period
 attribute).</p>
-<p>To get a unique instance of SimpleScheduler as the global scheduler of an
-application, the getSimpleScheduler factory function should be used. The
-function accepts an audio context as optional argument and uses the Waves
-default audio context (see Audio Context) as default. The factory creates
-a single (simple) scheduler for each audio context.</p>
-<p>Example that shows three Metronome engines running in a SimpleScheduler:
-<a href="https://rawgit.com/wavesjs/waves-audio/master/examples/simple-scheduler.html">https://rawgit.com/wavesjs/waves-audio/master/examples/simple-scheduler.html</a></p></div>
+<p><a href="https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler">https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler</a></p></div>
         
     
 </header>
@@ -62,7 +56,7 @@ a single (simple) scheduler for each audio context.</p>
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="SimpleScheduler"><span class="type-signature"></span>new SimpleScheduler<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="SimpleScheduler"><span class="type-signature"></span>new SimpleScheduler<span class="signature">(getTimeFunction, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -101,6 +95,41 @@ a single (simple) scheduler for each audio context.</p>
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>getTimeFunction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Function that must return a time in second.</p></td>
+        </tr>
+
     
 
         <tr>
@@ -286,7 +315,7 @@ a single (simple) scheduler for each audio context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_simple-scheduler.js.html">masters/simple-scheduler.js</a>, <a href="masters_simple-scheduler.js.html#line44">line 44</a>
+        <a href="masters_SimpleScheduler.js.html">masters/SimpleScheduler.js</a>, <a href="masters_SimpleScheduler.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -297,10 +326,6 @@ a single (simple) scheduler for each audio context.</p>
     <dd class="tag-see">
         <ul>
             <li><a href="TimeEngine.html">TimeEngine</a></li>
-        
-            <li><a href="AudioTimeEngine.html">AudioTimeEngine</a></li>
-        
-            <li><a href="global.html#getSimpleScheduler">getSimpleScheduler</a></li>
         
             <li><a href="Scheduler.html">Scheduler</a></li>
         </ul>
@@ -326,8 +351,10 @@ a single (simple) scheduler for each audio context.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import * as audio from 'waves-audio';
-const scheduler = audio.getSimpleScheduler();
+    <pre class="prettyprint"><code>import * as masters from 'waves-masters';
+
+const getTimeFunction = () => preformance.now() / 1000;
+const scheduler = new masters.SimpleScheduler(getTimeFunction);
 
 scheduler.add(myEngine);</code></pre>
 
@@ -511,7 +538,7 @@ scheduler.add(myEngine);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_simple-scheduler.js.html">masters/simple-scheduler.js</a>, <a href="masters_simple-scheduler.js.html#line194">line 194</a>
+        <a href="masters_SimpleScheduler.js.html">masters/SimpleScheduler.js</a>, <a href="masters_SimpleScheduler.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -593,7 +620,7 @@ scheduler.add(myEngine);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_simple-scheduler.js.html">masters/simple-scheduler.js</a>, <a href="masters_simple-scheduler.js.html#line253">line 253</a>
+        <a href="masters_SimpleScheduler.js.html">masters/SimpleScheduler.js</a>, <a href="masters_SimpleScheduler.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -779,7 +806,7 @@ scheduler.add(myEngine);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_simple-scheduler.js.html">masters/simple-scheduler.js</a>, <a href="masters_simple-scheduler.js.html#line179">line 179</a>
+        <a href="masters_SimpleScheduler.js.html">masters/SimpleScheduler.js</a>, <a href="masters_SimpleScheduler.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
@@ -910,7 +937,7 @@ scheduler.add(myEngine);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_simple-scheduler.js.html">masters/simple-scheduler.js</a>, <a href="masters_simple-scheduler.js.html#line246">line 246</a>
+        <a href="masters_SimpleScheduler.js.html">masters/SimpleScheduler.js</a>, <a href="masters_SimpleScheduler.js.html#line245">line 245</a>
     </li></ul></dd>
     
 
@@ -1097,7 +1124,7 @@ scheduler using the add method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_simple-scheduler.js.html">masters/simple-scheduler.js</a>, <a href="masters_simple-scheduler.js.html#line217">line 217</a>
+        <a href="masters_SimpleScheduler.js.html">masters/SimpleScheduler.js</a>, <a href="masters_SimpleScheduler.js.html#line216">line 216</a>
     </li></ul></dd>
     
 
@@ -1251,7 +1278,7 @@ scheduler using the add method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="masters_simple-scheduler.js.html">masters/simple-scheduler.js</a>, <a href="masters_simple-scheduler.js.html#line236">line 236</a>
+        <a href="masters_SimpleScheduler.js.html">masters/SimpleScheduler.js</a>, <a href="masters_SimpleScheduler.js.html#line235">line 235</a>
     </li></ul></dd>
     
 
@@ -1293,14 +1320,14 @@ scheduler using the add method.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioTimeEngine.html">AudioTimeEngine</a></li><li><a href="GranularEngine.html">GranularEngine</a></li><li><a href="Metronome.html">Metronome</a></li><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PlayerEngine.html">PlayerEngine</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SegmentEngine.html">SegmentEngine</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul><h3>Global</h3><ul><li><a href="global.html">audioContext</a></li><li><a href="global.html#getScheduler">getScheduler</a></li><li><a href="global.html#getSimpleScheduler">getSimpleScheduler</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SchedulingQueue.html">SchedulingQueue</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
     
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.3</a> on Tue Jul 25 2017 12:28:03 GMT+0200 (CEST)
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 01 2018 15:11:46 GMT+0200 (CEST)
     
 </footer>
 
