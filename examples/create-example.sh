@@ -14,8 +14,6 @@ rm README.md
 
 echo "npm install"
 npm install
-npm install --save wavesjs/waves-loaders
-npm install --save wavesjs/waves-blocks
 npm install --save @ircam/basic-controllers
 
 rm package-lock.json

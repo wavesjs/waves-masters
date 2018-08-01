@@ -1,8 +1,6 @@
-// import defaultAudioContext from '../core/audio-context';
 import PriorityQueue from '../core/PriorityQueue';
 import SchedulingQueue from '../core/SchedulingQueue';
 import TimeEngine from '../core/TimeEngine';
-// import { getScheduler } from './factories';
 
 
 function addDuplet(firstArray, secondArray, firstElement, secondElement) {
@@ -293,9 +291,9 @@ class TransportSchedulingQueue extends SchedulingQueue {
 }
 
 /**
- * Provides synchronized scheduling of Time Engine instances.
+ * Provides position-based scheduling of TimeEngine instances.
  *
- * [example]{@link https://rawgit.com/wavesjs/waves-audio/master/examples/transport.html}
+ * [example]{@link https://rawgit.com/wavesjs/waves-masters/master/examples/transport}
  *
  * @example
  * import * as masters from 'waves-masters';
@@ -316,15 +314,16 @@ class TransportSchedulingQueue extends SchedulingQueue {
  * playControl.start();
  */
 class Transport extends TimeEngine {
-  constructor(options = {}) {
+  constructor(scheduler, options = {}) {
     super();
 
-    this.audioContext = options.audioContext || defaultAudioContext;
+    if (!scheduler)
+      throw new Error('Invalid argument `scheduler`, should be an instance of `Scheduler`');
 
     this.__engines = [];
     this.__transported = [];
 
-    this.__scheduler = getScheduler(this.audioContext);
+    this.__scheduler = scheduler;
     this.__schedulerHook = new TransportSchedulerHook(this);
     this.__transportedQueue = new PriorityQueue();
     this.__schedulingQueue = new TransportSchedulingQueue(this);

@@ -262,21 +262,25 @@ class PlayControlledSchedulingQueue extends SchedulingQueue {
  * @param {TimeEngine} engine - engine to control
  *
  * @example
- * import * as audio from 'waves-audio';
- * const playerEngine = audio.PlayerEngine();
- * const playControl = new audio.PlayControl(playerEngine);
+ * import * as masters from 'waves-masters';
+ *
+ * const getTimeFunction = () => {
+ *   const now = process.hrtime();
+ *   return now[0] + now[1] * 1e-9;
+ * }
+ * const scheduler = new masters.Scheduler(getTimeFunction);
+ * const playerEngine = new MyTimeEngine();
+ * const playControl = new masters.PlayControl(scheduler, playerEngine);
  *
  * playControl.start();
  */
 class PlayControl extends TimeEngine {
-  constructor(engine, options = {}) {
+  constructor(scheduler, engine, options = {}) {
     super();
 
-    this.audioContext = options.audioContext || defaultAudioContext;
-    this.__scheduler = getScheduler(this.audioContext);
+    this.__scheduler = scheduler;
 
     this.__playControlled = null;
-
     this.__loopControl = null;
     this.__loopStart = 0;
     this.__loopEnd = 1;
