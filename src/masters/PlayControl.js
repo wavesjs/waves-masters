@@ -256,7 +256,7 @@ class PlayControlledSchedulingQueue extends SchedulingQueue {
 /**
  * Extends Time Engine to provide playback control of a Time Engine instance.
  *
- * [example]{@link https://rawgit.com/wavesjs/waves-audio/master/examples/play-control.html}
+ * [example]{@link https://rawgit.com/wavesjs/waves-masters/master/examples/transport/index.html}
  *
  * @extends TimeEngine
  * @param {Object} scheduler - instance of Scheduler

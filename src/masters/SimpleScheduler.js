@@ -20,7 +20,7 @@ function isFunction(functionToCheck) {
  * and to scheduled callback functions) within a scheduling period (see period
  * attribute).
  *
- * {@link https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler}
+ * {@link https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler/index.html}
  *
  * @param {Function} getTimeFunction - Function that must return a time in second.
  * @param {Object} [options={}] - default options

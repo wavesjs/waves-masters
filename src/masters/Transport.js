@@ -293,7 +293,8 @@ class TransportSchedulingQueue extends SchedulingQueue {
 /**
  * Provides position-based scheduling of TimeEngine instances.
  *
- * [example]{@link https://rawgit.com/wavesjs/waves-masters/master/examples/transport}
+ * [example]{@link https://rawgit.com/wavesjs/waves-masters/master/examples/transport/index.html}
+ *
  *
  * @param {Object} scheduler - instance of Scheduler
  *

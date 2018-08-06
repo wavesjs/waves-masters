@@ -21,7 +21,7 @@ function isFunction(functionToCheck) {
  * to assure the order of the scheduled engines (see `SimpleScheduler` for a
  * simplified scheduler implementation without `PriorityQueue`).
  *
- * {@link https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler}
+ * {@link https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler/index.html}
  *
  * @param {Function} getTimeFunction - Function that must return a time in second.
  * @param {Object} [options={}] - default options.
