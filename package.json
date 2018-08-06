@@ -4,7 +4,10 @@
   "description": "low level components for transport and scheduling",
   "authors": [
     "Norbert Schnell",
-    "Benjamin Matuszewski"
+    "Benjamin Matuszewski",
+    "Victor Saiz",
+    "Karim Barkati",
+    "Samuel Goldszmidt"
   ],
   "main": "dist/index.js",
   "license": "BSD-3-Clause",
