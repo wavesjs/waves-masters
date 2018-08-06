@@ -2,6 +2,7 @@ import * as masters from 'waves-masters';
 import * as controllers from '@ircam/basic-controllers';
 
 localStorage.debug = 'wavesjs:masters';
+controllers.setTheme('dark');
 
 class Metro extends masters.TimeEngine {
   constructor(period = 1) {

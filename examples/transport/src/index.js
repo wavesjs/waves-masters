@@ -1,6 +1,8 @@
 import * as masters from 'waves-masters';
 import * as controllers from '@ircam/basic-controllers';
 
+controllers.setTheme('dark');
+
 class PositionDisplay extends masters.TimeEngine {
   constructor($slider) {
     super();
