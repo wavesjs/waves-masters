@@ -70,6 +70,9 @@ class SimpleScheduler {
      * @instance
      */
     this.lookahead = options.lookahead || 0.1;
+
+    this._currentTimeToAudioTimeFunction =
+      options.currentTimeToAudioTimeFunction || function(currentTime) { return currentTime };
   }
 
   __scheduleEngine(engine, time) {
@@ -162,6 +165,22 @@ class SimpleScheduler {
    */
   get currentTime() {
     return this.__currentTime || this.getTimeFunction() + this.lookahead;
+  }
+
+  /**
+   * Scheduler current audio time according to `currentTime`
+   *
+   * @name audioTime
+   * @type {Number}
+   * @memberif Scheduler
+   * @instance
+   */
+  get audioTime() {
+    // @note - add this as in
+    if (this.master)
+      return this.master.audioTime;
+
+    return this._currentTimeToAudioTimeFunction(this.currentTime);
   }
 
   get currentPosition() {

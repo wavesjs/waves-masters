@@ -127,6 +127,20 @@ class TimeEngine {
   }
 
   /**
+   * The time engine's current (master) audio time.
+   *
+   * @type {Number}
+   * @memberof TimeEngine
+   * @readonly
+   */
+  get audioTime() {
+    if (this.master)
+      return this.master.audioTime;
+
+    return undefined;
+  }
+
+  /**
    * The time engine's current (master) position.
    *
    * @type {Number}
