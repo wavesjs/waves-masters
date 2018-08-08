@@ -27,6 +27,8 @@ function isFunction(functionToCheck) {
  * @param {Object} [options={}] - default options.
  * @param {Number} [options.period=0.025] - period of the scheduler.
  * @param {Number} [options.lookahead=0.1] - lookahead of the scheduler.
+ * @param {Number} [options.currentTimeToAudioTimeFunction] - function that convert
+ *  `currentTime` to `audioTime`. Defaults to no-op.
  *
  * @see TimeEngine
  * @see SimpleScheduler
@@ -69,6 +71,9 @@ class Scheduler extends SchedulingQueue {
      * @instance
      */
     this.lookahead = options.lookahead ||  0.1;
+
+    this._currentTimeToAudioTimeFunction =
+      options.currentTimeToAudioTimeFunction || function(currentTime) { return currentTime };
   }
 
   // setTimeout scheduling loop
@@ -122,10 +127,27 @@ class Scheduler extends SchedulingQueue {
    * @instance
    */
   get currentTime() {
+    // @note - can this really happen, and if yes, in which case?
     if (this.master)
       return this.master.currentTime;
 
     return this.__currentTime || this.getTimeFunction() + this.lookahead;
+  }
+
+  /**
+   * Scheduler current audio time according to `currentTime`
+   *
+   * @name audioTime
+   * @type {Number}
+   * @memberif Scheduler
+   * @instance
+   */
+  get audioTime() {
+    // @note - add this as in
+    if (this.master)
+      return this.master.audioTime;
+
+    return this._currentTimeToAudioTimeFunction(this.currentTime);
   }
 
   get currentPosition() {
@@ -136,6 +158,8 @@ class Scheduler extends SchedulingQueue {
 
     return undefined;
   }
+
+
 
   // inherited from scheduling queue
   /**

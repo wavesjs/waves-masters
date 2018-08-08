@@ -86,6 +86,10 @@ class PlayControlled {
     return this.__playControl.currentTime;
   }
 
+  get audioTime() {
+    return this.__playControl.audioTime;
+  }
+
   get currentPosition() {
     return this.__playControl.currentPosition;
   }
@@ -208,6 +212,10 @@ class PlayControlledSchedulerHook extends TimeEngine {
     return this.__playControl.currentTime;
   }
 
+  get audioTime() {
+    return this.__playControl.audioTime;
+  }
+
   get currentPosition() {
     return this.__playControl.currentPosition;
   }
@@ -238,6 +246,10 @@ class PlayControlledSchedulingQueue extends SchedulingQueue {
 
   get currentTime() {
     return this.__playControl.currentTime;
+  }
+
+  get audioTime() {
+    return this.__playControl.audioTime;
   }
 
   get currentPosition() {
@@ -349,7 +361,6 @@ class PlayControl extends TimeEngine {
 
   /**
    * Get current master time.
-   * This function will be replaced when the play-control is added to a master.
    *
    * @name currentTime
    * @type {Number}
@@ -359,6 +370,19 @@ class PlayControl extends TimeEngine {
    */
   get currentTime() {
     return this.__scheduler.currentTime;
+  }
+
+  /**
+   * Get current master time.
+   *
+   * @name audioTime
+   * @type {Number}
+   * @memberof PlayControl
+   * @instance
+   * @readonly
+   */
+  get audioTime() {
+    return this.__scheduler.audioTime;
   }
 
   /**

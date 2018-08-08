@@ -57,6 +57,10 @@ class Transported extends TimeEngine {
     return this.master.currentTime;
   }
 
+  get audioTime() {
+    return this.master.audioTime;
+  }
+
   get currentPosition() {
     return this.master.currentPosition - this.__offsetPosition;
   }
@@ -267,7 +271,7 @@ class TransportSchedulerHook extends TimeEngine {
   }
 }
 
-// internal scheduling queue that returns the current position (and time) of the play control
+// internal scheduling queue that returns the current position (and time) of the transport
 class TransportSchedulingQueue extends SchedulingQueue {
   constructor(transport) {
     super();
@@ -278,6 +282,10 @@ class TransportSchedulingQueue extends SchedulingQueue {
 
   get currentTime() {
     return this.__transport.currentTime;
+  }
+
+  get audioTime() {
+    return this.__transport.audioTime;
   }
 
   get currentPosition() {
@@ -374,8 +382,7 @@ class Transport extends TimeEngine {
   }
 
   /**
-   * Get current master time. This getter will be replaced when the transport
-   * is added to a master (i.e. transport or play-control).
+   * Get current master time.
    *
    * @type {Number}
    * @name currentTime
@@ -385,6 +392,19 @@ class Transport extends TimeEngine {
    */
   get currentTime() {
     return this.__scheduler.currentTime;
+  }
+
+  /**
+   * Get master audio time.
+   *
+   * @type {Number}
+   * @name currentTime
+   * @memberof Transport
+   * @instance
+   * @readonly
+   */
+  get audioTime() {
+    return this.__scheduler.audioTime;
   }
 
   /**
