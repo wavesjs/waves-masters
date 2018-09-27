@@ -586,7 +586,19 @@ class Transport extends TimeEngine {
       if (position === undefined)
         position = transported.syncPosition(this.currentTime, this.currentPosition, speed);
 
-      const nextPosition = this.__transportedQueue.move(transported, position);
+      let nextPosition = null;
+
+      // the priority queue does not keep track of the elements that are
+      // inserted at Infinity, so we need to reinsert transported engine in
+      // this case.
+      // @note - this could probably be more clean
+      //       - probably the priority queue should keep these references
+      if (!this.__transportedQueue.has(transported)) {
+        nextPosition = this.__transportedQueue.insert(transported, position);
+      } else {
+        nextPosition = this.__transportedQueue.move(transported, position);
+      }
+
       this.resetPosition(nextPosition);
     }
   }
