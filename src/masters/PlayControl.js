@@ -118,7 +118,7 @@ class PlayControlledTransported extends PlayControlled {
   }
 
   syncSpeed(time, position, speed, seek, lastSpeed) {
-    if (speed !== lastSpeed || (seek && speed !== 0)) {
+    if (speed !== lastSpeed || seek) {
       var nextPosition;
 
       // resync transported engines
@@ -129,11 +129,12 @@ class PlayControlledTransported extends PlayControlled {
         // start
         nextPosition = this.__engine.syncPosition(time, position, speed);
       } else if (speed === 0) {
-        // stop
+        // stop / pause
+        this.__engine.syncPosition(time, position, speed);
         nextPosition = Infinity;
 
-        if (this.__engine.syncSpeed)
-          this.__engine.syncSpeed(time, position, 0);
+        // if (this.__engine.syncSpeed)
+        //   this.__engine.syncSpeed(time, position, 0);
       } else if (this.__engine.syncSpeed) {
         // change speed without reversing direction
         this.__engine.syncSpeed(time, position, speed);

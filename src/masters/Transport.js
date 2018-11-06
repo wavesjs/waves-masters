@@ -483,7 +483,7 @@ class Transport extends TimeEngine {
     this.__position = position;
     this.__speed = speed;
 
-    if (speed !== lastSpeed || (seek && speed !== 0)) {
+    if (speed !== lastSpeed || seek) {
       let nextPosition;
 
       // resync transported engines
@@ -496,7 +496,7 @@ class Transport extends TimeEngine {
       } else if (speed === 0) {
         // stop
         nextPosition = Infinity;
-        this.__syncTransportedSpeed(time, position, 0);
+        this.__syncTransportedPosition(time, position, speed);
       } else {
         // change speed without reversing direction
         this.__syncTransportedSpeed(time, position, speed);
