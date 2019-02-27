@@ -14,10 +14,11 @@ class PositionDisplay extends masters.TimeEngine {
   syncPosition(time, position, speed) {
     let nextPosition = Math.floor(position / this.period) * this.period;
 
-    if (speed > 0 && nextPosition < position)
+    if (speed > 0 && nextPosition < position) {
       nextPosition += this.period;
-    else if (speed < 0 && nextPosition > position)
+    } else if (speed < 0 && nextPosition > position) {
       nextPosition -= this.period;
+    }
 
     this.$slider.value = position.toFixed(2);
 
@@ -27,10 +28,11 @@ class PositionDisplay extends masters.TimeEngine {
   advancePosition(time, position, speed) {
     this.$slider.value = position.toFixed(2);
 
-    if (speed < 0)
+    if (speed < 0) {
       return position - this.period;
-    else
+    } else {
       return position + this.period;
+    }
   }
 }
 
