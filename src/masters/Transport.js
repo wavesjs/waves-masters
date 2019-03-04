@@ -148,12 +148,16 @@ class TransportedTransported extends Transported {
   }
 
   syncPosition(time, position, speed) {
-    if (speed > 0 && position < this.__endPosition)
+    if (speed > 0 && position < this.__endPosition) {
       position = Math.max(position, this.__startPosition);
-    else if (speed < 0 && position >= this.__startPosition)
+      return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
+    } else if (speed < 0 && position >= this.__startPosition) {
       position = Math.min(position, this.__endPosition);
+      return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
+    }
 
-    return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
+    return Infinity * speed;
+    // return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
   }
 
   advancePosition(time, position, speed) {
@@ -562,6 +566,8 @@ class Transport extends TimeEngine {
     }
 
     if (engine && transported) {
+      transported.syncPosition(this.currentTime, this.currentPosition, 0);
+
       const nextPosition = this.__transportedQueue.remove(transported);
 
       transported.destroy();
