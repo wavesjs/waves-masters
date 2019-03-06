@@ -128,8 +128,9 @@ class Transported extends TimeEngine {
   }
 
   syncSpeed(time, position, speed) {
-    if (speed === 0) // stop
+    if (speed === 0) {
       this.stop(time, position - this.__offsetPosition);
+    }
   }
 
   destroy() {
@@ -142,44 +143,108 @@ class Transported extends TimeEngine {
 
 // TransportedTransported
 // has to switch on and off the scheduled engines when the transport hits the engine's start and end position
+// @note - does not handle properly __startPosition and __endPosition
 class TransportedTransported extends Transported {
   constructor(transport, engine, startPosition, endPosition, offsetPosition) {
     super(transport, engine, startPosition, endPosition, offsetPosition);
   }
 
+  // @todo - handle this.__running to start and stop properly the scheduled engines
   syncPosition(time, position, speed) {
-    // we want to handle the `pause` and stop too
-    if (speed >= 0 && position < this.__endPosition) {
-      position = Math.max(position, this.__startPosition);
-      return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
-    } else if (speed <= 0 && position >= this.__startPosition) {
-      position = Math.min(position, this.__endPosition);
-      return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
+    let nextPosition = null; // Infinity * speed; // default return
+
+    if (speed > 0) {
+
+      if (position < this.__startPosition) {
+        // sync engine at `_startPosition`
+        nextPosition = this.__offsetPosition + this.__engine.syncPosition(time, this.__startPosition - this.__offsetPosition, speed);
+        this.__isRunning = true;
+      } else if (position < this.__endPosition) {
+        // sync engine at `position`
+        nextPosition = this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
+        this.__isRunning = true;
+      } else {
+        this.__engine.syncPosition(time, position - this.__offsetPosition, 0);
+
+        this.__isRunning = false;
+        nextPosition = Infinity * speed;
+      }
+
+      // if somehow the engine asked to be called after `endPosition`, clamp value
+      if (this.__isRunning && nextPosition > this.__endPosition) {
+        nextPosition = this.__endPosition;
+      }
+
+    } else if (speed < 0) {
+
+      if (position > this.__endPosition) {
+        nextPosition = this.__offsetPosition + this.__engine.syncPosition(time, this.__endPosition - this.__offsetPosition, speed);
+        this.__isRunning = true;
+      } else if (position > this.__startPosition) {
+        nextPosition = this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
+        this.__isRunning = true;
+      } else {
+        this.__engine.syncPosition(time, position - this.__offsetPosition, 0);
+
+        this.__isRunning = false;
+        nextPosition = Infinity * speed;
+      }
+
+      // if somehow the engine asked to be called before `startPosition`, clamp value
+      if (this.__isRunning && nextPosition < this.__startPosition) {
+        nextPosition = this.__startPosition;
+      }
+
+    } else {
+      this.__engine.syncPosition(time, position - this.__offsetPosition, 0);
+
+      this.__isRunning = false;
+      nextPosition = Infinity;
     }
 
-    return Infinity * speed;
-    // return this.__offsetPosition + this.__engine.syncPosition(time, position - this.__offsetPosition, speed);
+    return nextPosition;
   }
 
   advancePosition(time, position, speed) {
+    // stop engine if outside boundaries
+    if (speed > 0 && position >= this.__endPosition && this.__isRunning) {
+      // stop engine at __endPosition
+      this.__engine.syncPosition(time, this.__endPosition - this.__offsetPosition, 0);
+      this.__isRunning = false;
+
+      return Infinity * speed; //
+    } else if (speed < 0 && position < this.__startPosition && this.__isRunning) {
+      this.__engine.syncPosition(time, this.__startPosition - this.__offsetPosition, 0);
+      this.__isRunning = false;
+
+      return Infinity * speed; //
+    }
+
+    // define next position and clamp to boundaries
     position = this.__offsetPosition + this.__engine.advancePosition(time, position - this.__offsetPosition, speed);
 
-    if (speed > 0 && position < this.__endPosition || speed < 0 && position >= this.__startPosition)
-      return position;
+    // stop engine if outside boundaries
+    if (speed > 0 && position > this.__endPosition) {
+      position = this.__endPosition;
+    } else if (speed < 0 && position < this.__startPosition) {
+      position = this.__startPosition;
+    }
 
-    return Infinity * speed;
+    return position;
   }
 
   syncSpeed(time, position, speed) {
-    if (this.__engine.syncSpeed)
+    if (this.__engine.syncSpeed) {
       this.__engine.syncSpeed(time, position, speed);
+    }
   }
 
   resetEnginePosition(engine, position = undefined) {
-    if (position !== undefined)
+    if (position !== undefined) {
       position += this.__offsetPosition;
+    }
 
-    this.resetPosition(position);
+    this.master.resetEnginePosition(this, position);
   }
 
   destroy() {
