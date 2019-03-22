@@ -206,6 +206,14 @@ class TransportedTransported extends Transported {
   }
 
   advancePosition(time, position, speed) {
+    // ceil position at 10^-9 because of rounding errors
+    // that creates an infinite loop
+    if (speed > 0) {
+      position = Math.ceil(position * 1e9) * 1e-9;
+    } else if (speed < 0) {
+      position = Math.floor(position * 1e9) * 1e-9;
+    }
+
     // stop engine if outside boundaries
     if (speed > 0 && position >= this.__endPosition && this.__isRunning) {
       // stop engine at __endPosition
