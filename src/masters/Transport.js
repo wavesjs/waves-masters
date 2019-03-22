@@ -206,8 +206,8 @@ class TransportedTransported extends Transported {
   }
 
   advancePosition(time, position, speed) {
-    // ceil position at 10^-9 because of rounding errors
-    // that creates an infinite loop
+    // ceil or floor `position` at 10^-9 to prevent float arithmetics errors
+    // that make the transported go to infinite loops
     if (speed > 0) {
       position = Math.ceil(position * 1e9) * 1e-9;
     } else if (speed < 0) {
@@ -231,7 +231,8 @@ class TransportedTransported extends Transported {
     // define next position and clamp to boundaries
     position = this.__offsetPosition + this.__engine.advancePosition(time, position - this.__offsetPosition, speed);
 
-    // stop engine if outside boundaries
+    // stop engine if outside boundaries - will call advancePosition once more
+    // and thus `syncPosition` (cf. line 218 - 228)
     if (speed > 0 && position > this.__endPosition) {
       position = this.__endPosition;
     } else if (speed < 0 && position < this.__startPosition) {
