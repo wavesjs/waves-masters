@@ -36,7 +36,7 @@ function isFunction(functionToCheck) {
  * @example
  * import * as masters from 'waves-masters';
  *
- * const getTimeFunction = () => preformance.now() / 1000;
+ * const getTimeFunction = () => performance.now() / 1000;
  * const scheduler = new masters.Scheduler(getTimeFunction);
  *
  * scheduler.add(myEngine);
