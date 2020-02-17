@@ -31,7 +31,7 @@
     "deploy": "np --yolo",
     "doc": "jsdoc -c jsdoc.json",
     "prepublishOnly": "npm run transpile",
-    "version": "npm run clean && npm run transpile && npm run doc && git add docs",
+    "version": "npm run clean && npm run transpile",
     "transpile": "babel src --out-dir dist",
     "watch": "npm run clean && npm run transpile && chokidar src -c \"npm run transpile\""
   },
