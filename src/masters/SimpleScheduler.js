@@ -1,7 +1,4 @@
-import debug from 'debug';
 import TimeEngine from '../core/TimeEngine';
-
-const log = debug('wavesjs:masters');
 
 function isFunction(functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
@@ -108,11 +105,9 @@ class SimpleScheduler {
   __resetTick() {
     if (this.__schedEngines.length > 0) {
       if (!this.__timeout) {
-        log('SimpleScheduler Start');
         this.__tick();
       }
     } else if (this.__timeout) {
-      log('SimpleScheduler Stop');
       clearTimeout(this.__timeout);
       this.__timeout = null;
     }

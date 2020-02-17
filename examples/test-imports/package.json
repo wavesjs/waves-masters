@@ -1,0 +1,33 @@
+{
+  "name": "es6-next-prototyping-client",
+  "version": "1.1.0",
+  "description": "client prototyping boilerplate",
+  "author": "Benjamin Matuszewski",
+  "license": "ISC",
+  "scripts": {
+    "transpile": "node bin/runner --transpile",
+    "watch": "node bin/runner --watch",
+    "postinstall": "npm run transpile"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.0",
+    "lit-element": "^2.0.1",
+    "waves-masters": "^1.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.1",
+    "@babel/plugin-transform-regenerator": "^7.4.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "browserify-incremental": "^3.1.1",
+    "colors": "^1.1.2",
+    "connect": "^3.3.5",
+    "fs-extra": "^7.0.1",
+    "klaw": "^3.0.0",
+    "ora": "^3.2.0",
+    "portfinder": "^1.0.20",
+    "serve-favicon": "^2.2.0",
+    "serve-static": "^1.9.2"
+  }
+}

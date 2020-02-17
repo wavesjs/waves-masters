@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+const pkg = require('../package.json');
+const chalk = require('chalk');
+const path = require('path');
+
+const prefix = '[' + pkg.name + ']\t';
+const getDeltaTime = time => new Date().getTime() - time;
+
+
+module.exports.transpileSuccess = (src, dist, dt) => {
+  const msg = prefix + chalk.green('%s: successfully transpiled to "%s" (%sms)');
+  console.log(msg, src.rel, dist.rel, dt);
+}
+
+module.exports.transpileError = (src, err) => {
+  const msg = prefix + chalk.red('transpile error: %s');
+  const content = err.message.replace(src.abs, src.rel);
+
+  console.log(msg, content);
+}
+
+module.exports.serverSuccess = port => {
+  const msg = prefix + chalk.cyan('> server listen on http://127.0.0.1:%s');
+  console.log(msg, port);
+}
+
+module.exports.serverError = (err) => {
+  const msg = prefix + chalk.red('> server error: %s');
+  const content = err.message;
+
+  console.log(msg, content);
+}
+
+module.exports.watching = (srcDirectory) => {
+  const msg = prefix + chalk.cyan('> watching sources in: "%s"');
+  console.log(msg, srcDirectory.rel);
+}

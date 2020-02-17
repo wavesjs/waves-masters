@@ -1,0 +1,96 @@
+#!/usr/bin/env node
+const path = require('path');
+const fs = require('fs');
+const fileStore = require('./fileStore');
+const log = require('./log');
+const transpiler = require('./transpiler');
+const server = require('./server');
+const packageJson = require('../package.json');
+
+const cwd = process.cwd();
+
+/* --------------------------------------------------------------------------
+ * Configuration
+ * -------------------------------------------------------------------------- */
+
+const srcDirectory = path.join(cwd, 'src');
+const main = path.join(srcDirectory, 'index.js');
+const bundleName = 'bundle.js';
+const bundle = path.join(cwd, bundleName);
+
+const browserifyOptions = {
+  debug: true,
+  fullPaths: false,
+};
+
+const babelrc = JSON.parse(fs.readFileSync(path.join(cwd, '.babelrc')));
+
+const babelOptions = {
+   // we need to merge `.babelrc` because it seems to be ignored when setting `global` to `true`
+   // https://github.com/babel/babelify/issues/276#issuecomment-452459476`
+  ...babelrc,
+  comments: false,
+  // allow usage of dependencies shipping only es6 modules
+  global: true,
+  // usage of `ignore`` is not really usefull as we can't predict format of dependencies
+  // of dependencies.
+};
+
+function getTime(startTime = null) {
+  if (startTime === null) {
+    return new Date().getTime();
+  } else {
+    return getTime() - startTime;
+  }
+}
+
+async function transpile() {
+  const startTime = getTime();
+  const source = await fileStore.get(main);
+  const destination = await fileStore.get(bundle);
+
+  try {
+    await transpiler.bundle(source, destination, browserifyOptions, babelOptions);
+    log.transpileSuccess(source, destination, getTime() - startTime);
+    return Promise.resolve();
+  } catch(err) {
+    log.transpileError(source, err);
+    return Promise.reject(err);
+  }
+}
+
+async function serve() {
+  try {
+    const port = await server.start(async (req) => {
+      if (req.url === `/${bundleName}`) {
+        await transpile();
+      }
+
+      return Promise.resolve();
+    });
+
+    log.serverSuccess(port);
+    return Promise.resolve();
+  } catch(err) {
+    log.serverError(err);
+    return Promise.reject(err);
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Parse commands
+ * -------------------------------------------------------------------------- */
+
+const command = process.argv[2];
+
+switch (command) {
+  case '--watch':
+    serve().catch(err => console.error(err.stack));
+    break;
+  case '--transpile':
+    transpile().catch(err => console.error(err.stack));
+    break;
+}
+
+/* -------------------------------------------------------------------------- */
+

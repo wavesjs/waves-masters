@@ -1,7 +1,7 @@
 .babelrc
 jsdoc.conf
+rollup.config.js
 
-bin
 docs
 src
 tests

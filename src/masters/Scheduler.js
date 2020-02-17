@@ -1,7 +1,4 @@
-import debug from 'debug';
 import SchedulingQueue from '../core/SchedulingQueue';
-
-const log = debug('wavesjs:masters');
 
 function isFunction(functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
@@ -102,8 +99,9 @@ class Scheduler extends SchedulingQueue {
       }
 
       if (time !== Infinity) {
-        if (this.__nextTime === Infinity)
-          log('Scheduler Start');
+        if (this.__nextTime === Infinity) {
+          // scheduler start
+        }
 
         const timeOutDelay = Math.max((time - this.lookahead - this.getTimeFunction()), this.period);
 
@@ -111,7 +109,7 @@ class Scheduler extends SchedulingQueue {
           this.__tick();
         }, Math.ceil(timeOutDelay * 1000));
       } else if (this.__nextTime !== Infinity) {
-        log('Scheduler Stop');
+        // scheduler stop
       }
 
       this.__nextTime = time;
