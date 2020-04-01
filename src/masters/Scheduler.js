@@ -46,7 +46,7 @@ function isFunction(functionToCheck) {
  * @param {Object} [options={}] - default options.
  * @param {Number} [options.period=0.025] - period of the scheduler.
  * @param {Number} [options.lookahead=0.1] - lookahead of the scheduler.
- * @param {Number} [options.currentTimeToAudioTimeFunction] - convertion function
+ * @param {Number} [options.currentTimeToAudioTimeFunction=t => t] - convertion function
  *  from `currentTime` to `audioTime`. Defaults to identity function.
  *
  * @see TimeEngine
