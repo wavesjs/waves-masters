@@ -56,7 +56,7 @@ scheduler.add(engine, startTime);
 
 ## Credits
 
-The code has been initiated in the framework of the WAVE and CoSiMa research projects, funded by the French National Research Agency (ANR). 
+This library has been initiated (formerly in the context of the [waves-audio](https://github.com/wavesjs/waves-audio) library) in the framework of the WAVE (ANR-12-CORD-0027) and CoSiMa (ANR-13-CORD-0010) research projects, funded by the French National Research Agency (ANR). 
 
 ## License
 
