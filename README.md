@@ -60,4 +60,4 @@ This library has been initiated (formerly in the context of the [waves-audio](ht
 
 ## License
 
-BSD-3-Clause
+[BSD-3-Clause](./License)
