@@ -40,53 +40,61 @@ media stream. It implements one or multiple interfaces to be driven by a
 master (i.e. a Scheduler, a Transport or a PlayControl) in synchronization
 with other engines. The provided interfaces are scheduled, transported,
 and play-controlled.</p>
-<h4>The <code>scheduled</code> interface</h4><p>The scheduled interface allows for synchronizing an engine to a monotonous time
+<h4>The <code>scheduled</code> interface</h4>
+<p>The scheduled interface allows for synchronizing an engine to a monotonous time
 as it is provided by the Scheduler master.</p>
-<h6><code>advanceTime(time :Number) -&gt; {Number}</code></h6><p>The <code>advanceTime</code> method has to be implemented by an <code>TimeEngine</code> as part of the
+<h6><code>advanceTime(time :Number) -&gt; {Number}</code></h6>
+<p>The <code>advanceTime</code> method has to be implemented by an <code>TimeEngine</code> as part of the
 scheduled interface. The method is called by the master (e.g. the scheduler).
 It generates an event and to returns the time of the next event (i.e. the next
 call of advanceTime). The returned time has to be greater than the time
 received as argument of the method. In case that a TimeEngine has to generate
 multiple events at the same time, the engine has to implement its own loop
 while(event.time &lt;= time) and return the time of the next event (if any).</p>
-<h6><code>resetTime(time=undefined :Number)</code></h6><p>The <code>resetTime</code> method is provided by the <code>TimeEngine</code> base class. An engine may
+<h6><code>resetTime(time=undefined :Number)</code></h6>
+<p>The <code>resetTime</code> method is provided by the <code>TimeEngine</code> base class. An engine may
 call this method to reset its next event time (e.g. when a parameter is
 changed that influences the engine's temporal behavior). When no argument
 is given, the time is reset to the current master time. When calling the
 method with Infinity the engine is suspended without being removed from the
 master.</p>
-<h4>The <code>transported</code> interface</h4><p>The transported interface allows for synchronizing an engine to a position
+<h4>The <code>transported</code> interface</h4>
+<p>The transported interface allows for synchronizing an engine to a position
 (i.e. media playback time) that can run forward and backward and jump as it
 is provided by the Transport master.</p>
-<h6><code>syncPosition(time :Number, position :Number, speed :Number) -&gt; {Number}</code></h6><p>The <code>syncPositon</code> method has to be implemented by a <code>TimeEngine</code> as part of the
+<h6><code>syncPosition(time :Number, position :Number, speed :Number) -&gt; {Number}</code></h6>
+<p>The <code>syncPositon</code> method has to be implemented by a <code>TimeEngine</code> as part of the
 transported interface. The method syncPositon is called whenever the master
 of a transported engine has to (re-)synchronize the engine's position. This
 is for example required when the master (re-)starts playback, jumps to an
 arbitrary position, and when reversing playback direction. The method returns
 the next position of the engine in the given playback direction
 (i.e. <code>speed &lt; 0</code> or <code>speed &gt; 0</code>).</p>
-<h6><code>advancePosition(time :Number, position :Number, speed :Number) -&gt; {Number}</code></h6><p>The <code>advancePosition</code> method has to be implemented by a <code>TimeEngine</code> as part
+<h6><code>advancePosition(time :Number, position :Number, speed :Number) -&gt; {Number}</code></h6>
+<p>The <code>advancePosition</code> method has to be implemented by a <code>TimeEngine</code> as part
 of the transported interface. The master calls the advancePositon method when
 the engine's event position is reached. The method generates an event and
 returns the next position in the given playback direction (i.e. speed &lt; 0 or
 speed &gt; 0). The returned position has to be greater (i.e. when speed &gt; 0)
 or less (i.e. when speed &lt; 0) than the position received as argument of the
 method.</p>
-<h6><code>resetPosition(position=undefined :Number)</code></h6><p>The resetPosition method is provided by the TimeEngine base class. An engine
+<h6><code>resetPosition(position=undefined :Number)</code></h6>
+<p>The resetPosition method is provided by the TimeEngine base class. An engine
 may call this method to reset its next event position. When no argument
 is given, the time is reset to the current master time. When calling the
 method with Infinity the engine is suspended without being removed from
 the master.</p>
-<h4>The speed-controlled interface</h4><p>The &quot;speed-controlled&quot; interface allows for syncronizing an engine that is
+<h4>The speed-controlled interface</h4>
+<p>The &quot;speed-controlled&quot; interface allows for syncronizing an engine that is
 neither driven through the scheduled nor the transported interface. The
 interface allows in particular to synchronize engines that assure their own
 scheduling (i.e. audio player or an oscillator) to the event-based scheduled
 and transported engines.</p>
-<h6><code>syncSpeed(time :Number, position :Number, speed :Number, seek=false :Boolean)</code></h6><p>The syncSpeed method has to be implemented by a TimeEngine as part of the
+<h6><code>syncSpeed(time :Number, position :Number, speed :Number, seek=false :Boolean)</code></h6>
+<p>The syncSpeed method has to be implemented by a TimeEngine as part of the
 speed-controlled interface. The method is called by the master whenever the
 playback speed changes or the position jumps arbitarily (i.e. on a seek).</p>
 <hr />
-
 <p>Example that shows a <code>TimeEngine</code> running in a <code>Scheduler</code> that counts up
 at a given frequency:
 <a href="https://rawgit.com/wavesjs/waves-audio/master/examples/time-engine.html">https://rawgit.com/wavesjs/waves-audio/master/examples/time-engine.html</a></p></div>
@@ -150,7 +158,7 @@ at a given frequency:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="core_TimeEngine.js.html">core/TimeEngine.js</a>, <a href="core_TimeEngine.js.html#line103">line 103</a>
+        <a href="core_TimeEngine.js.html">core/TimeEngine.js</a>, <a href="core_TimeEngine.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -770,14 +778,14 @@ class MyEngine extends audio.TimeEngine {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PlayControl.html">PlayControl</a></li><li><a href="PriorityQueue.html">PriorityQueue</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="SchedulingQueue.html">SchedulingQueue</a></li><li><a href="SimpleScheduler.html">SimpleScheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul><h3>Global</h3><ul><li><a href="global.html">audioTime</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PlayControl.html">PlayControl</a></li><li><a href="Scheduler.html">Scheduler</a></li><li><a href="TimeEngine.html">TimeEngine</a></li><li><a href="Transport.html">Transport</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
     
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 22 2019 12:32:58 GMT+0100 (CET)
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Apr 01 2020 17:47:39 GMT+0200 (CEST)
     
 </footer>
 

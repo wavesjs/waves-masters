@@ -55,6 +55,8 @@ const _isHigherMinHeap = function(time1, time2) {
 const POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
 
 /**
+ * @private
+ *
  * Priority queue implementing a binary heap.
  * Acts as a min heap by default, can be dynamically changed to a max heap
  * by setting `reverse` to true.

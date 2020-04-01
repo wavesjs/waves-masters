@@ -10,6 +10,8 @@ import PriorityQueue from './PriorityQueue.js';
 import TimeEngine from './TimeEngine.js';
 
 /**
+ * @private
+ *
  * @class SchedulingQueue
  * @extends TimeEngine
  */
@@ -52,7 +54,7 @@ class SchedulingQueue extends TimeEngine {
     }, time);
   }
 
-  // add a time engine to the scheduler
+  // add a time engine to the queue
   add(engine, time = this.currentTime) {
     if (!TimeEngine.implementsScheduled(engine))
       throw new Error("object cannot be added to scheduler");

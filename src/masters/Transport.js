@@ -391,7 +391,7 @@ class TransportSchedulingQueue extends SchedulingQueue {
  * @param {Object} scheduler - instance of Scheduler
  *
  * @example
- * import * as masters from 'waves-masters';
+ * import masters from 'waves-masters';
  *
  * const getTimeFunction = () => {
  *   const now = process.hrtime();

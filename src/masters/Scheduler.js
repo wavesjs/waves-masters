@@ -6,10 +6,10 @@ function isFunction(functionToCheck) {
 
 /**
  * The `Scheduler` class implements a master for `TimeEngine` instances
- * that implement the *scheduled* interface (such as the `Metronome` and
- * `GranularEngine`).
+ * that implement the *scheduled* interface. The scheduled interface allows for
+ * synchronizing an engine to a monotonous time as it is provided by the given
+ * `getTimeFunction`.
  *
- * A `Scheduler` can also schedule simple callback functions.
  * The class is based on recursive calls to `setTimeout` and uses the time
  * returned by the `getTimeFunction` passed as first argument as a logical time
  * passed to the `advanceTime` methods of the scheduled engines or to the
@@ -18,28 +18,62 @@ function isFunction(functionToCheck) {
  * to assure the order of the scheduled engines (see `SimpleScheduler` for a
  * simplified scheduler implementation without `PriorityQueue`).
  *
+ * An object implementing the *scheduled* interface MUST implement the
+ * `advanceTime` method and CAN implement the `resetTime` method.
+ *
+ * ###### `advanceTime(time :Number) -> {Number}`
+ *
+ * The `advanceTime` method has to be implemented by an `TimeEngine` as part of the
+ * scheduled interface. The method is called by the master (e.g. the scheduler).
+ * It generates an event and to returns the time of the next event (i.e. the next
+ * call of advanceTime). The returned time has to be greater than the time
+ * received as argument of the method. In case that a TimeEngine has to generate
+ * multiple events at the same time, the engine has to implement its own loop
+ * while(event.time <= time) and return the time of the next event (if any).
+ *
+ * ###### `resetTime(time=undefined :Number)`
+ *
+ * The `resetTime` method is provided by the `TimeEngine` base class. An engine may
+ * call this method to reset its next event time (e.g. when a parameter is
+ * changed that influences the engine's temporal behavior). When no argument
+ * is given, the time is reset to the current master time. When calling the
+ * method with Infinity the engine is suspended without being removed from the
+ * master.
+ *
  * {@link https://rawgit.com/wavesjs/waves-masters/master/examples/scheduler/index.html}
  *
  * @param {Function} getTimeFunction - Function that must return a time in second.
  * @param {Object} [options={}] - default options.
  * @param {Number} [options.period=0.025] - period of the scheduler.
  * @param {Number} [options.lookahead=0.1] - lookahead of the scheduler.
- * @param {Number} [options.currentTimeToAudioTimeFunction] - function that convert
- *  `currentTime` to `audioTime`. Defaults to no-op.
+ * @param {Number} [options.currentTimeToAudioTimeFunction] - convertion function
+ *  from `currentTime` to `audioTime`. Defaults to identity function.
  *
  * @see TimeEngine
- * @see SimpleScheduler
  *
  * @example
- * import * as masters from 'waves-masters';
+ * import { Scheduler } from 'waves-masters';
  *
- * const getTimeFunction = () => performance.now() / 1000;
- * const scheduler = new masters.Scheduler(getTimeFunction);
+ * const getTime = () => new Date().getTime() / 1000;
+ * const scheduler = new Scheduler(getTime);
  *
- * scheduler.add(myEngine);
+ * const myEngine = {
+ *   advanceTime(currentTime) {
+ *     console.log(currentTime);
+ *     // ask to be called in 1 second
+ *     return time + 1;
+ *   }
+ * }
+ *
+ * const startTime = Math.ceil(getTime());
+ * scheduler.add(myEngine, startTime);
  */
 class Scheduler extends SchedulingQueue {
-  constructor(getTimeFunction, options = {}) {
+  constructor(getTimeFunction, {
+      period = 0.025,
+      lookahead = 0.1,
+      currentTimeToAudioTimeFunction = t => t,
+    } = {}) {
     super();
 
     if (!isFunction(getTimeFunction))
@@ -58,7 +92,7 @@ class Scheduler extends SchedulingQueue {
      * @memberof Scheduler
      * @instance
      */
-    this.period = options.period ||  0.025;
+    this.period = period;
 
     /**
      * scheduler lookahead time (> period)
@@ -67,13 +101,63 @@ class Scheduler extends SchedulingQueue {
      * @memberof Scheduler
      * @instance
      */
-    this.lookahead = options.lookahead ||  0.1;
+    this.lookahead = lookahead;
 
-    this._currentTimeToAudioTimeFunction =
-      options.currentTimeToAudioTimeFunction || function(currentTime) { return currentTime };
+    this._currentTimeToAudioTimeFunction = currentTimeToAudioTimeFunction;
   }
 
-  // setTimeout scheduling loop
+  // inherited from scheduling queue
+  /**
+   * An object implementing the *scheduled* interface (called `engine`) to the
+   * scheduler at an optionally given time.
+   *
+   * The `advanceTime` method of the engine added to a scheduler will be called
+   * at the given time and with the given time as argument. The `advanceTime`
+   * method can return a new scheduling time (i.e. the next time when it will
+   * be called) or it can return Infinity to suspend scheduling without removing
+   * the function from the scheduler. A function that does not return a value
+   * (or returns null or 0) is removed from the scheduler and cannot be used as
+   * argument of the methods `remove` and `resetEngineTime` anymore.
+   *
+   * @name add
+   * @function
+   * @memberof Scheduler
+   * @instance
+   * @param {TimeEngine|Function} engine - Engine to add to the scheduler
+   * @param {Number} [time=this.currentTime] - Engine start time
+   */
+  /**
+   * Remove an engine implementing the *scheduled* interface that has been
+   * added to the scheduler using the `add` method from the scheduler.
+   *
+   * @name remove
+   * @function
+   * @memberof Scheduler
+   * @instance
+   * @param {TimeEngine} engine - Engine to remove from the scheduler
+   * @param {Number} [time=this.currentTime] - Schedule time
+   */
+  /**
+   * Reschedule a scheduled an engine implementing the *scheduled* interface at
+   * a given time.
+   *
+   * @name resetEngineTime
+   * @function
+   * @memberof Scheduler
+   * @instance
+   * @param {TimeEngine} engine - Engine to reschedule
+   * @param {Number} time - Schedule time
+   */
+  /**
+   * Remove all scheduled engines from the scheduler.
+   *
+   * @name clear
+   * @function
+   * @memberof Scheduler
+   * @instance
+   */
+
+  /** @private */
   __tick() {
     const currentTime = this.getTimeFunction();
     let time = this.__nextTime;
@@ -91,6 +175,7 @@ class Scheduler extends SchedulingQueue {
 
   resetTime(time = this.currentTime) {
     if (this.master) {
+      // @warning / @fixme - who is implementing `reset` ? is it `resetTime` ?
       this.master.reset(this, time);
     } else {
       if (this.__timeout) {
@@ -105,6 +190,7 @@ class Scheduler extends SchedulingQueue {
 
         const timeOutDelay = Math.max((time - this.lookahead - this.getTimeFunction()), this.period);
 
+        //
         this.__timeout = setTimeout(() => {
           this.__tick();
         }, Math.ceil(timeOutDelay * 1000));
@@ -137,11 +223,11 @@ class Scheduler extends SchedulingQueue {
    *
    * @name audioTime
    * @type {Number}
-   * @memberif Scheduler
+   * @memberof Scheduler
    * @instance
    */
   get audioTime() {
-    // @note - add this as in
+    // @note - add this as in currentTime even if we don't know why
     if (this.master)
       return this.master.audioTime;
 
@@ -156,60 +242,6 @@ class Scheduler extends SchedulingQueue {
 
     return undefined;
   }
-
-
-
-  // inherited from scheduling queue
-  /**
-   * Add a TimeEngine or a simple callback function to the scheduler at an
-   * optionally given time. Whether the add method is called with a TimeEngine
-   * or a callback function it returns a TimeEngine that can be used as argument
-   * of the methods remove and resetEngineTime. A TimeEngine added to a scheduler
-   * has to implement the scheduled interface. The callback function added to a
-   * scheduler will be called at the given time and with the given time as
-   * argument. The callback can return a new scheduling time (i.e. the next
-   * time when it will be called) or it can return Infinity to suspend scheduling
-   * without removing the function from the scheduler. A function that does
-   * not return a value (or returns null or 0) is removed from the scheduler
-   * and cannot be used as argument of the methods remove and resetEngineTime
-   * anymore.
-   *
-   * @name add
-   * @function
-   * @memberof Scheduler
-   * @instance
-   * @param {TimeEngine|Function} engine - Engine to add to the scheduler
-   * @param {Number} [time=this.currentTime] - Schedule time
-   */
-  /**
-   * Remove a TimeEngine from the scheduler that has been added to the
-   * scheduler using the add method.
-   *
-   * @name add
-   * @function
-   * @memberof Scheduler
-   * @instance
-   * @param {TimeEngine} engine - Engine to remove from the scheduler
-   * @param {Number} [time=this.currentTime] - Schedule time
-   */
-  /**
-   * Reschedule a scheduled time engine at a given time.
-   *
-   * @name resetEngineTime
-   * @function
-   * @memberof Scheduler
-   * @instance
-   * @param {TimeEngine} engine - Engine to reschedule
-   * @param {Number} time - Schedule time
-   */
-  /**
-   * Remove all scheduled callbacks and engines from the scheduler.
-   *
-   * @name clear
-   * @function
-   * @memberof Scheduler
-   * @instance
-   */
 }
 
 export default Scheduler;

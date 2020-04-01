@@ -1,8 +1,8 @@
 .babelrc
-jsdoc.conf
-rollup.config.js
+.editorconfig
+jsdoc.json
+TODO.md
 
 docs
-src
 tests
 examples

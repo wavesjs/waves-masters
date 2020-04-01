@@ -111,6 +111,12 @@ nav li {
   margin-top: 1px;
 }
 
+blockquote {
+  border-left: 10px solid #cdcdcd;
+  margin-left: 0;
+  padding: 1px 0px 1px 20px;
+}
+
 /* @see links */
 .tag-see p {
   margin: 0;

@@ -5,8 +5,7 @@ function isFunction(functionToCheck) {
 }
 
 /**
- *
- *
+ * @private
  *
  * The SimpleScheduler class implements a simplified master for time engines
  * (see TimeEngine) that implement the scheduled interface
@@ -54,7 +53,7 @@ class SimpleScheduler {
      * scheduler (setTimeout) period
      * @type {Number}
      * @name period
-     * @memberof Scheduler
+     * @memberof SimpleScheduler
      * @instance
      */
     this.period = options.period || 0.025;
@@ -63,7 +62,7 @@ class SimpleScheduler {
      * scheduler lookahead time (> period)
      * @type {Number}
      * @name lookahead
-     * @memberof Scheduler
+     * @memberof SimpleScheduler
      * @instance
      */
     this.lookahead = options.lookahead || 0.1;
@@ -155,7 +154,7 @@ class SimpleScheduler {
    *
    * @name currentTime
    * @type {Number}
-   * @memberof Scheduler
+   * @memberof SimpleScheduler
    * @instance
    */
   get currentTime() {
@@ -167,7 +166,7 @@ class SimpleScheduler {
    *
    * @name audioTime
    * @type {Number}
-   * @memberif Scheduler
+   * @memberof SimpleScheduler
    * @instance
    */
   get audioTime() {

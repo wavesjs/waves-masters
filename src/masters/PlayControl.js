@@ -276,7 +276,7 @@ class PlayControlledSchedulingQueue extends SchedulingQueue {
  * @param {TimeEngine} engine - engine to control
  *
  * @example
- * import * as masters from 'waves-masters';
+ * import masters from 'waves-masters';
  *
  * const getTimeFunction = () => {
  *   const now = process.hrtime();
