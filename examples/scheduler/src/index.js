@@ -1,4 +1,4 @@
-import * as masters from 'waves-masters';
+import masters from 'waves-masters';
 import * as controllers from '@ircam/basic-controllers';
 
 localStorage.debug = 'wavesjs:masters';
