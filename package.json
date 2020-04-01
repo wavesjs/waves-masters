@@ -20,20 +20,18 @@
   },
   "homepage": "http://wavesjs.github.io/waves-masters",
   "keywords": [
-    "dsp",
     "web audio",
-    "scheduling",
-    "audio player",
+    "audio scheduling",
     "audio transport"
   ],
   "scripts": {
     "clean": "rm -Rf dist",
     "deploy": "np --yolo",
     "doc": "jsdoc -c jsdoc.json",
-    "prepublishOnly": "npm run transpile",
-    "version": "npm run clean && npm run transpile",
-    "transpile": "babel src --out-dir dist",
-    "watch": "npm run clean && npm run transpile && chokidar src -c \"npm run transpile\""
+    "prepublishOnly": "npm run clean && npm run build",
+    "version": "npm run clean && npm run build",
+    "build": "babel src --out-dir dist",
+    "dev": "npm run clean && npm run build && chokidar src -c \"npm run build\""
   },
   "dependencies": {},
   "devDependencies": {
