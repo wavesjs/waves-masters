@@ -1,6 +1,6 @@
 {
   "name": "waves-masters",
-  "version": "2.1.0",
+  "version": "2.0.0",
   "description": "low level components for transport and scheduling",
   "authors": [
     "Norbert Schnell",
@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "clean": "rm -Rf dist",
-    "deploy": "np --yolo",
+    "deploy": "np --yolo --no-publish && npm publish",
     "docs": "jsdoc -c jsdoc.json",
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run docs && git add docs",
