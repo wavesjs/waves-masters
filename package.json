@@ -10,6 +10,7 @@
     "Samuel Goldszmidt"
   ],
   "main": "dist/index.js",
+  "browser": "src/index.js",
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
@@ -35,12 +36,11 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.9.0",
     "chokidar": "^3.0.1",
-    "chokidar-cli": "^1.2.2",
-    "concurrently": "^4.1.0",
-    "np": "^6.1.0"
+    "chokidar-cli": "^2.1.0",
+    "np": "^6.2.0"
   }
 }

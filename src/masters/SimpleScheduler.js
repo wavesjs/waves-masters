@@ -1,4 +1,4 @@
-import TimeEngine from '../core/TimeEngine';
+import TimeEngine from '../core/TimeEngine.js';
 
 function isFunction(functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';

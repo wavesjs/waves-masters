@@ -1,6 +1,6 @@
-import PriorityQueue from '../core/PriorityQueue';
-import SchedulingQueue from '../core/SchedulingQueue';
-import TimeEngine from '../core/TimeEngine';
+import PriorityQueue from '../core/PriorityQueue.js';
+import SchedulingQueue from '../core/SchedulingQueue.js';
+import TimeEngine from '../core/TimeEngine.js';
 
 
 function addDuplet(firstArray, secondArray, firstElement, secondElement) {

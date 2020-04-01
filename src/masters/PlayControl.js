@@ -1,5 +1,5 @@
-import SchedulingQueue from '../core/SchedulingQueue';
-import TimeEngine from '../core/TimeEngine';
+import SchedulingQueue from '../core/SchedulingQueue.js';
+import TimeEngine from '../core/TimeEngine.js';
 
 const EPSILON = 1e-8;
 

@@ -6,8 +6,8 @@
  * Copyright 2014, 2015 IRCAM – Centre Pompidou
  */
 
-import PriorityQueue from './PriorityQueue';
-import TimeEngine from './TimeEngine';
+import PriorityQueue from './PriorityQueue.js';
+import TimeEngine from './TimeEngine.js';
 
 /**
  * @class SchedulingQueue

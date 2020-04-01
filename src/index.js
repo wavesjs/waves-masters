@@ -1,13 +1,13 @@
 // core
-import _TimeEngine from './core/TimeEngine';
-import _PriorityQueue from './core/PriorityQueue';
-import _SchedulingQueue from './core/SchedulingQueue';
+import _TimeEngine from './core/TimeEngine.js';
+import _PriorityQueue from './core/PriorityQueue.js';
+import _SchedulingQueue from './core/SchedulingQueue.js';
 
 // masters
-import _PlayControl from './masters/PlayControl';
-import _Transport from './masters/Transport';
-import _Scheduler from './masters/Scheduler';
-import _SimpleScheduler from './masters/SimpleScheduler';
+import _PlayControl from './masters/PlayControl.js';
+import _Transport from './masters/Transport.js';
+import _Scheduler from './masters/Scheduler.js';
+import _SimpleScheduler from './masters/SimpleScheduler.js';
 
 // explicit default export
 export default {
