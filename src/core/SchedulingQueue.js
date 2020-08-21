@@ -3,7 +3,7 @@
  * http://wavesjs.github.io/audio/#audio-scheduling-queue
  *
  * Norbert.Schnell@ircam.fr
- * Copyright 2014, 2015 IRCAM – Centre Pompidou
+ * Copyright 2014, 2015 IRCAM – Centre Pompidou
  */
 
 import PriorityQueue from './PriorityQueue.js';
@@ -24,9 +24,9 @@ class SchedulingQueue extends TimeEngine {
   }
 
   // TimeEngine 'scheduled' interface
-  advanceTime(time) {
+  advanceTime(time, audioTime, dt) {
     const engine = this.__queue.head;
-    const nextEngineTime = engine.advanceTime(time);
+    const nextEngineTime = engine.advanceTime(time, audioTime, dt);
 
     if (!nextEngineTime) {
       engine.master = null;

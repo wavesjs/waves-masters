@@ -166,7 +166,14 @@ class Scheduler extends SchedulingQueue {
 
     while (time <= currentTime + this.lookahead) {
       this.__currentTime = time;
-      time = this.advanceTime(time);
+      // pass new arguments to make the API more simple
+      // @todo - see what it means for transport...
+      // if a transfert function between scheduler time and audio time has been given
+      const audioTime = this.audioTime;
+      // delta time between the tick call and the actual scheduled event
+      const dt = time - currentTime;
+
+      time = this.advanceTime(time, audioTime, dt);
     }
 
     this.__currentTime = null;
