@@ -1,6 +1,6 @@
 {
   "name": "waves-masters",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "low level components for transport and scheduling",
   "authors": [
     "Norbert Schnell",
