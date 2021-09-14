@@ -28,7 +28,9 @@ class SchedulingQueue extends TimeEngine {
     const engine = this.__queue.head;
     const nextEngineTime = engine.advanceTime(time, audioTime, dt);
 
-    if (!nextEngineTime) {
+    // we don't care about Infinity or -Infinity has these values are
+    // not accepted into the priority queue anyway
+    if (!Number.isFinite(nextEngineTime)) {
       engine.master = null;
       this.__engines.delete(engine);
       this.__queue.remove(engine);
@@ -46,21 +48,28 @@ class SchedulingQueue extends TimeEngine {
 
   // call a function at a given time
   defer(fun, time = this.currentTime) {
-    if (!(fun instanceof Function))
+    if (!(fun instanceof Function)) {
       throw new Error("object cannot be defered by scheduler");
+    }
 
+    // make sure that the advanceTime method does not returm anything
     this.add({
-      advanceTime: function(time) { fun(time); }, // make sure that the advanceTime method does not returm anything
+      advanceTime: (currentTime, audioTime, dt) => {
+        fun(currentTime, audioTime, dt);
+        return null;
+      },
     }, time);
   }
 
   // add a time engine to the queue
   add(engine, time = this.currentTime) {
-    if (!TimeEngine.implementsScheduled(engine))
+    if (!TimeEngine.implementsScheduled(engine)) {
       throw new Error("object cannot be added to scheduler");
+    }
 
-    if (engine.master)
+    if (engine.master) {
       throw new Error("object has already been added to a master");
+    }
 
     engine.master = this;
 
@@ -74,8 +83,9 @@ class SchedulingQueue extends TimeEngine {
 
   // remove a time engine from the queue
   remove(engine) {
-    if (engine.master !== this)
+    if (engine.master !== this) {
       throw new Error("object has not been added to this scheduler");
+    }
 
     engine.master = null;
 
@@ -89,15 +99,17 @@ class SchedulingQueue extends TimeEngine {
 
   // reset next engine time
   resetEngineTime(engine, time = this.currentTime) {
-    if (engine.master !== this)
+    if (engine.master !== this) {
       throw new Error("object has not been added to this scheduler");
+    }
 
     let nextTime;
 
-    if (this.__queue.has(engine))
+    if (this.__queue.has(engine)) {
       nextTime = this.__queue.move(engine, time);
-    else
+    } else {
       nextTime = this.__queue.insert(engine, time);
+    }
 
     this.resetTime(nextTime);
   }
@@ -109,8 +121,9 @@ class SchedulingQueue extends TimeEngine {
 
   // clear queue
   clear() {
-    for(let engine of this.__engines)
+    for (let engine of this.__engines) {
       engine.master = null;
+    }
 
     this.__queue.clear();
     this.__engines.clear();
